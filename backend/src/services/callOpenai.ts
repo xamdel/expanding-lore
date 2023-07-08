@@ -6,10 +6,25 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // Export flexible function to be called with prompt templates and specified model
-export async function generateCompletion(prompt: string, model: string) {
+export async function generateCompletion(userPrompt: string, model: string, systemPrompt?: string) {
+  const messages = [
+    {
+      "role": "user",
+      "content": userPrompt
+    }
+  ];
+
+  if (systemPrompt) {
+    messages.unshift({
+      "role": "system",
+      "content": systemPrompt
+    });
+  }
+
   const completion = await openai.createChatCompletion({
     model: model,
-    messages: [{"role": "user", "content": prompt}],
+    messages: messages,
   });
+
   return completion.data.choices[0].message.content;
 }

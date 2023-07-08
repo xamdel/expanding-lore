@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 export async function generateCompletion(prompt: string, model: string) {
   const completion = await openai.createChatCompletion({
     model: model,
-    messages: prompt,
+    messages: [{"role": "user", "content": prompt}],
   });
-  return completion.data.choices[0].message;
+  return completion.data.choices[0].message.content;
 }

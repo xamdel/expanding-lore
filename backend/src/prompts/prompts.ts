@@ -14,12 +14,13 @@ export const narrativePrompt = `Invent an outline for a narrative thread taking 
 export const characterSheetPrompt = `Take the character brief provided by the user and use it to create an expanded character sheet. Reply only in JSON in the following format: {
   "name": ,
   "sex": ,
-  "physical_description": ,
+  "physical_description": <brief paragraph>,
   "backstory": ,
   "personality_descriptors": [
   ],
   "motivations": [
   ],
   "reason_for_being_here": ,
+  "intended_duration_of_stay": ,
   "friendliness": (1-10)",
 }`

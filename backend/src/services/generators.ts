@@ -13,7 +13,7 @@ export async function generateNarrative() {
 // Function for expanding character brief into full character sheet
 export async function createCharacterSheet(CharacterBrief: CharacterBrief) {
   const model = "gpt-4";
-  const userPrompt = `${CharacterBrief}`;
+  const userPrompt = JSON.stringify(CharacterBrief);
   const characterSheet = await generateCompletion(
     userPrompt,
     model,

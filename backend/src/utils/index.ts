@@ -1,5 +1,6 @@
 import { extractEntities } from "../services/classifiers";
 import { generateDescriptions } from "../services/generators";
+import { MongoClient } from 'mongodb';
 
 // Generate wiki entries from narrative threads using classifier and generator functions
 export async function extractAndDescribeEntities(narrative: string) {
@@ -14,4 +15,12 @@ export async function extractAndDescribeEntities(narrative: string) {
   }
 
   return entityDescriptions;
+}
+
+// Add object to database
+export async function addToDatabase(client: MongoClient, document: any, collectionName: string): Promise<void> {
+  const db = client.db(); 
+  
+  const collection = db.collection(collectionName);
+  await collection.insertOne(document);
 }

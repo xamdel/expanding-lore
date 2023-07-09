@@ -1,4 +1,10 @@
-const Slot = ({ character }) => {
+import { Character } from "../types";
+
+interface SlotProps {
+  character: Character
+}
+
+const Slot = ({ character }: SlotProps) => {
   const style = {
     position: "absolute",
     //   left: `${/*x-position*/}%`,
@@ -7,7 +13,7 @@ const Slot = ({ character }) => {
 
   return (
     <div className="slot" style={style}>
-      {character && <Character {...character} />}
+      {character && <Character {character} />}
     </div>
   );
 };

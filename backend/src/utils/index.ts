@@ -18,7 +18,7 @@ export async function extractAndDescribeEntities(narrative: string) {
 }
 
 // Add object to database
-export async function addToDatabase(client: MongoClient, document: any, collectionName: string): Promise<void> {
+export async function saveToDB(client: MongoClient, document: any, collectionName: string): Promise<void> {
   const db = client.db(); 
   
   const collection = db.collection(collectionName);

@@ -18,3 +18,5 @@ const Tavern = () => {
       </div>
     );
   };
+
+export default Tavern

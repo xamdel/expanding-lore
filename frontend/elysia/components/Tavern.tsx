@@ -6,8 +6,8 @@ const Tavern = () => {
   
     // Create predefined positions for characters to occupy
     const slots = [
-      { position: { x: 10, y: 20 }, character: characters[0] },
-      { position: { x: 20, y: 30 }, character: characters[1] },
+      { slotPosition: { x: 10, y: 20 }, character: characters[0] },
+      { slotPosition: { x: 20, y: 30 }, character: characters[1] },
     ];
   
     return (

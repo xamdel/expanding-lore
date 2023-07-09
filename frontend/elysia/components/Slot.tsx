@@ -1,19 +1,28 @@
-import { Character } from "../types";
+import { Character as CharacterType} from "../types";
+import Character from "./Character";
 
-interface SlotProps {
-  character: Character
+interface SlotPosition {
+  x: number;
+  y: number;
 }
 
-const Slot = ({ character }: SlotProps) => {
-  const style = {
+interface SlotProps {
+  slotPosition: SlotPosition;
+  character: CharacterType | null;
+}
+
+const Slot = ({ slotPosition, character }: SlotProps) => {
+  const { x, y } = slotPosition;
+
+  const style: React.CSSProperties = {
     position: "absolute",
-    //   left: `${/*x-position*/}%`,
-    //   top: `${/*y-position*/}%`,
+    left: `${x}%`,
+    top: `${y}%`,
   };
 
   return (
     <div className="slot" style={style}>
-      {character && <Character {character} />}
+      {character && <Character character={character} />}
     </div>
   );
 };

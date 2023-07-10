@@ -5,7 +5,12 @@ import { generateCompletion } from "./callOpenai";
 // Function to generate narrative threads
 export async function generateNarrative() {
   const model = "gpt-4";
-  const narrative = await generateCompletion(narrativePrompt, model);
+  console.log("generateNarrative function called. Calling OpenAI...");
+  const response = await generateCompletion(narrativePrompt, model);
+  const cleanedResponse = response.replace(/\n/g, ' ');
+  console.log(cleanedResponse, typeof(cleanedResponse));
+  const narrative = JSON.parse(cleanedResponse);
+  console.log({ narrative });
 
   return narrative;
 }
@@ -14,33 +19,56 @@ export async function generateNarrative() {
 export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
   const model = "gpt-4";
   const userPrompt = JSON.stringify(CharacterBrief);
-  const characterSheet = await generateCompletion(
+  const response = await generateCompletion(
     userPrompt,
     model,
     characterSheetPrompt
   );
+  const characterSheet = JSON.parse(response);
 
   return characterSheet;
 }
 
 // Generate descriptions for named entities extracted from narrative text
-export async function generateDescriptions(entity: string, text: string) {
-  const response = await fetch(
-    "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
-    {
-      headers: { Authorization: `Bearer ${process.env.HF_API_TOKEN}` },
-      method: "POST",
-      body: JSON.stringify({
-        inputs: `Create a description for ${entity} based on this paragraph: "${text}"`,
-        parameters: {
-            temperature: 0,
-            max_new_tokens: 20,
-            return_full_text: false
-        }
-      }),
+export async function generateDescription(entity: string, text: string, wait_for_model = false) {
+  console.log({entity}, typeof(entity));
+  console.log({text}, typeof(text));
+  try {
+    // Construct request body
+    const requestBody = {
+      inputs: `Create a description for ${entity.trim()} based on this paragraph: "${text}"`,
+      parameters: {
+        // temperature: 0.0,
+        max_new_tokens: 20,
+        return_full_text: false,
+      },
+      options: {
+        wait_for_model: wait_for_model
+      }
+    };
+
+    console.log("Request Body: ", requestBody);
+    
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
+      {
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}` 
+        },
+        method: "POST",
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  );
-  const result = await response.json();
-  
-  return result.generated_text;
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(`Failed to generate description: ${error}`);
+    throw error;
+  }
 }

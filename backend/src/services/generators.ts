@@ -5,12 +5,9 @@ import { generateCompletion } from "./callOpenai";
 // Function to generate narrative threads
 export async function generateNarrative() {
   const model = "gpt-4";
-  console.log("generateNarrative function called. Calling OpenAI...");
   const response = await generateCompletion(narrativePrompt, model);
   const cleanedResponse = response.replace(/\n/g, ' ');
-  console.log(cleanedResponse, typeof(cleanedResponse));
   const narrative = JSON.parse(cleanedResponse);
-  console.log({ narrative });
 
   return narrative;
 }
@@ -31,8 +28,6 @@ export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
 
 // Generate descriptions for named entities extracted from narrative text
 export async function generateDescription(entity: string, text: string, wait_for_model = false) {
-  // console.log({entity}, typeof(entity));
-  // console.log({text}, typeof(text));
   try {
     // Construct request body
     const requestBody = {
@@ -46,8 +41,6 @@ export async function generateDescription(entity: string, text: string, wait_for
         wait_for_model: wait_for_model
       }
     };
-
-    // console.log("Request Body: ", requestBody);
     
     const response = await fetch(
       "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
@@ -66,7 +59,6 @@ export async function generateDescription(entity: string, text: string, wait_for
     }
     const result = await response.json();
 
-    // console.log(result);
     return result;
   } catch (error) {
     console.error(`Failed to generate description: ${error}`);

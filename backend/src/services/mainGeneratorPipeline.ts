@@ -65,9 +65,7 @@ export async function mainGeneratorPipeline(client: MongoClient) {
           name: entity.word,
           description: description[0].generated_text,
         };
-
-        console.log(entry);
-
+        
         switch (entity.entity_group) {
           case "PER":
             await saveToDB(client, entry, "people");

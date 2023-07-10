@@ -17,7 +17,7 @@ export async function generateNarrative() {
 
 // Function for expanding character brief into full character sheet
 export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
-  const model = "gpt-4";
+  const model = "gpt-3.5-turbo-0613";
   const userPrompt = JSON.stringify(CharacterBrief);
   const response = await generateCompletion(
     userPrompt,
@@ -31,15 +31,15 @@ export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
 
 // Generate descriptions for named entities extracted from narrative text
 export async function generateDescription(entity: string, text: string, wait_for_model = false) {
-  console.log({entity}, typeof(entity));
-  console.log({text}, typeof(text));
+  // console.log({entity}, typeof(entity));
+  // console.log({text}, typeof(text));
   try {
     // Construct request body
     const requestBody = {
-      inputs: `Create a description for ${entity.trim()} based on this paragraph: "${text}"`,
+      inputs: `${text} Based on the previous paragraph, create a brief description for ${entity}. Do not include anything besides the description of ${entity}. ${entity} is`,
       parameters: {
-        // temperature: 0.0,
-        max_new_tokens: 20,
+        temperature: 0.5,
+        max_new_tokens: 150,
         return_full_text: false,
       },
       options: {
@@ -47,7 +47,7 @@ export async function generateDescription(entity: string, text: string, wait_for
       }
     };
 
-    console.log("Request Body: ", requestBody);
+    // console.log("Request Body: ", requestBody);
     
     const response = await fetch(
       "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
@@ -66,6 +66,7 @@ export async function generateDescription(entity: string, text: string, wait_for
     }
     const result = await response.json();
 
+    // console.log(result);
     return result;
   } catch (error) {
     console.error(`Failed to generate description: ${error}`);

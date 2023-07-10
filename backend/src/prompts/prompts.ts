@@ -3,8 +3,8 @@ export const narrativePrompt = `Invent an outline for a narrative thread taking 
   "narrative_thread": paragraph,
     "characters": [
       {
-        "name": ,
-        "brief description",
+        "name": <first and last>,
+        "brief description": ,
         "relationship_to_narrative": ,
         "reason_for_being_in_Crosswind_Hold": ,
       },
@@ -12,15 +12,17 @@ export const narrativePrompt = `Invent an outline for a narrative thread taking 
 }`
 
 export const characterSheetPrompt = `Take the character brief provided by the user and use it to create an expanded character sheet. Reply only in JSON in the following format: {
-  "name": ,
-  "sex": ,
+  "name": required,
+  "sex": required,
   "physical_description": <brief paragraph>,
-  "backstory": ,
+  "backstory": required,
   "personality_descriptors": [
+    required
   ],
   "motivations": [
+    required
   ],
-  "reason_for_being_here": ,
-  "intended_duration_of_stay": ,
-  "friendliness": (1-10)",
+  "reason_for_being_here": required,
+  "intended_duration_of_stay": required,
+  "friendliness": (1-10)" required,
 }`

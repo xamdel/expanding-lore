@@ -4,6 +4,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import cron from "node-cron";
 import { mainGeneratorPipeline } from "./services/mainGeneratorPipeline";
+import { generateDescription } from "./services/generators";
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -22,6 +23,7 @@ async function startServer() {
     console.log("Connected successfully to MongoDB");
 
     await mainGeneratorPipeline(client);
+    // await generateDescription('hi', 'bye');
 
     // Set up cron job for intermittant generation
     // cron.schedule("*/2 * * * *", async function () {});

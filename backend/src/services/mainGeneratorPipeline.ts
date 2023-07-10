@@ -24,15 +24,17 @@ export async function mainGeneratorPipeline(client: MongoClient) {
   try {
     entities = await extractEntities(narrative.narrative_thread);
   } catch (error: any) {
-    if (error.message.includes('503')) {
-      console.log("Inference endpoint busy. Retrying with wait_for_model=true...");
+    if (error.message.includes("503")) {
+      console.log(
+        "Inference endpoint busy. Retrying with wait_for_model=true..."
+      );
       entities = await extractEntities(narrative.narrative_thread, true);
     } else {
       console.error(`Failed to extract entities: ${error}`);
     }
   }
-  
-  console.log({ entities });  
+
+  console.log({ entities });
 
   console.log("Generating compendium entries...");
   if (entities) {
@@ -58,20 +60,26 @@ export async function mainGeneratorPipeline(client: MongoClient) {
             throw error;
           }
         }
-        console.log(description);
+        
+        const entry = {
+          name: entity.word,
+          description: description[0].generated_text,
+        };
+
+        console.log(entry);
 
         switch (entity.entity_group) {
           case "PER":
-            await saveToDB(client, description, "people");
+            await saveToDB(client, entry, "people");
             break;
           case "LOC":
-            await saveToDB(client, description, "locations");
+            await saveToDB(client, entry, "locations");
             break;
           case "ORG":
-            await saveToDB(client, description, "factions");
+            await saveToDB(client, entry, "factions");
             break;
           case "MISC":
-            await saveToDB(client, description, "other");
+            await saveToDB(client, entry, "other");
             break;
           default:
             console.log(`Unexpected entity group: ${entity.entity_group}`);

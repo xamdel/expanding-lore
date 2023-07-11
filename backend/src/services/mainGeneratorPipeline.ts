@@ -125,7 +125,7 @@ export async function mainGeneratorPipeline(client: MongoClient) {
 
         switch (entity.entity_group) {
           case "PER":
-            await saveToDB(client, entry, "people");
+            await saveToDB(client, entry, "characters");
             break;
           case "LOC":
             await saveToDB(client, entry, "locations");

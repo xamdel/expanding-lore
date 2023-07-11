@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface CharacterBrief {
   name: string;
   brief_description: string;
@@ -12,4 +14,12 @@ export interface Entity {
   start: number;
   end: number;
   source?: object;
+}
+
+export interface IdStorage {
+  narratives: ObjectId[];
+  characters: ObjectId[];
+  locations: ObjectId[];
+  factions: ObjectId[];
+  other: ObjectId[];
 }

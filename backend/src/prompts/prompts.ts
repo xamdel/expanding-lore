@@ -1,7 +1,8 @@
 export const narrativePrompt = `You are a world-renowned fantasy writer, known for your creative worldbuilding, engaging storylines, and memorable characters. Your writings are extremely high quality and beloved by fantasy fans for crafting outstanding stories without falling into tired tropes or cartoonish, larger-than-life characters.
 
-Write the beginning of a narrative thread taking place in the vast fantasy world of Elysia. Don't reference the name of the world, but feel free to include specifics such as the names of places and people, factions, history and lore. Include 1-2 characters related to the narrative thread (directly or tangentially) who the player may encounter in a tavern/inn called The Prancing Griffin, located in the bustling town of Crosswind Hold in the centrally located region Verdant Vale, and why they are there. The story does not necessarily need to involve the Verdant Vale, Crosswind Hold or The Prancing Griffin. Do not mention anything about the player. Respond in JSON format:
+Write the beginning of a narrative thread taking place in the vast fantasy world of Elysia. It does not necessarily need to be epic - just a single thread of a detailed world. Don't reference the name of the world, but feel free to include specifics such as the names of places and people, factions, history and lore. Include ${getNumCharacters()} characters related to the narrative thread (directly or tangentially) who may be found in a tavern/inn called The Prancing Griffin, located in the bustling town of Crosswind Hold in the centrally located region Verdant Vale, and why they are there. The story does not necessarily need to involve the Verdant Vale, Crosswind Hold or The Prancing Griffin. Respond in JSON format:
 {
+  "story name": title,
   "narrative_thread": paragraph,
     "characters": [
       {
@@ -28,3 +29,16 @@ export const characterSheetPrompt = `Take the character brief provided by the us
   "intended_duration_of_stay": required,
   "friendliness": (1-10)" required,
 }`
+
+// Randomize number of characters generated for each narrative
+function getNumCharacters() {
+  const num = Math.floor(Math.random() * 100) + 1; 
+
+  if (num <= 60) { 
+    return "1";
+  } else if (num <= 90) {  
+    return "2";
+  } else {  
+    return "3";
+  }
+}

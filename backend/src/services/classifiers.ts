@@ -26,12 +26,15 @@ export async function extractEntities(
 
     const result: Entity[] = await response.json();
 
-    // Ignore duplicate entities
+    // Ignore duplicate entities, filtered words
+    const IGNORED_WORDS = ["Elysia", "Verdant Vale", "Crosswind Hold", "The Prancing Griffin"];
+
     const uniqueEntities = new Set();
     const filteredEntities = result.filter((entity: Entity) => {
       const duplicate = uniqueEntities.has(entity.word);
+      const ignored = IGNORED_WORDS.includes(entity.word);
       uniqueEntities.add(entity.word);
-      return !duplicate;
+      return !duplicate && !ignored;
     });
 
     return filteredEntities;

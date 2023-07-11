@@ -18,16 +18,19 @@ export interface Narratives {
 }
 
 export interface Locations {
+  _id: string;
   name: string;
   description: string;
 }
 
 export interface Factions {
+  _id: string;
   name: string;
   description: string;
 }
 
 export interface Other {
+  _id: string;
   name: string;
   description: string;
 }

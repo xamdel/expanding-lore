@@ -1,11 +1,12 @@
 import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Character } from '../../types';
+import styles from '../../styles/Compendium.module.css'
 
 const Characters = ({ characters }: { characters: Character[]}) => {
     
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Characters</h1>
             {characters.map((character) => (
                 <div key={character._id}>

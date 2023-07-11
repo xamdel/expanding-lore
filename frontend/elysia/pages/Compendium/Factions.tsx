@@ -1,11 +1,12 @@
 import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Factions } from '../../types';
+import styles from '../../styles/Compendium.module.css'
 
 const Factions = ({ factions }: { factions: Factions[]}) => {
     
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Factions</h1>
             {factions.map((faction) => (
                 <div key={faction._id}>

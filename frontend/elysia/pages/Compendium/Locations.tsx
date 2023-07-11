@@ -1,11 +1,12 @@
 import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Locations } from '../../types';
+import styles from '../../styles/Compendium.module.css'
 
 const Locations = ({ locations }: { locations: Locations[]}) => {
     
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Locations</h1>
             {locations.map((location) => (
                 <div key={location._id}>

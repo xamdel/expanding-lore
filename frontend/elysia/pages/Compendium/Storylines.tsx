@@ -1,11 +1,12 @@
 import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Narratives } from '../../types';
+import styles from '../../styles/Compendium.module.css'
 
 const Narratives = ({ narratives }: { narratives: Narratives[]}) => {
     
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Narratives</h1>
             {narratives.map((narrative) => (
                 <div key={narrative._id}>

@@ -10,3 +10,24 @@ export interface Character {
   intended_duration_of_stay: string;
   friendliness: number;
 }
+
+export interface Narratives {
+  _id: string;
+  "story name": string;
+  narrative_thread: string;
+}
+
+export interface Locations {
+  name: string;
+  description: string;
+}
+
+export interface Factions {
+  name: string;
+  description: string;
+}
+
+export interface Other {
+  name: string;
+  description: string;
+}

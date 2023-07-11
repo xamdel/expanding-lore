@@ -6,6 +6,7 @@ import {
   generateNarrative,
 } from "./generators";
 import { extractEntities } from "./classifiers";
+import { Entity } from "../types";
 
 // Call the generator and classifier functions sequentially, saving results to the database
 export async function mainGeneratorPipeline(client: MongoClient) {
@@ -14,58 +15,105 @@ export async function mainGeneratorPipeline(client: MongoClient) {
   await saveToDB(client, narrative, "narratives");
 
   console.log("Generating character sheets...");
+  let characters = [];
   for (const characterData of narrative.characters) {
     const characterSheet = await generateCharacterSheet(characterData);
+    characters.push(characterSheet);
     await saveToDB(client, characterSheet, "characters");
   }
 
   console.log("Extracting named entities");
-  let entities;
+
+  // Extract entities from narrative thread
+  let narrativeEntities: Entity[] = [];
   try {
-    entities = await extractEntities(narrative.narrative_thread);
+    narrativeEntities = await extractEntities(narrative.narrative_thread);
   } catch (error: any) {
     if (error.message.includes("503")) {
       console.log(
         "Inference endpoint busy. Retrying with wait_for_model=true..."
       );
-      entities = await extractEntities(narrative.narrative_thread, true);
+      narrativeEntities = await extractEntities(
+        narrative.narrative_thread,
+        true
+      );
     } else {
       console.error(`Failed to extract entities: ${error}`);
     }
   }
 
-  console.log({ entities });
+  // Extract entities from character backstories
+  // Extract entities from character backstories
+  let characterEntities: Entity[] = [];
+  for (const characterData of characters) {
+    try {
+      const entities = await extractEntities(characterData.backstory);
+      const entitiesWithSource = entities.map((entity) => ({
+        ...entity,
+        source: characterData.backstory,
+      }));
+
+      // Filter out entities that match any word in the character's name
+      const characterNameWords = new Set(characterData.name.split(" "));
+
+      const filteredEntities = entitiesWithSource.filter((entity) => {
+        const entityWords = entity.word.split(" ");
+
+        for (const word of entityWords) {
+          if (characterNameWords.has(word)) {
+            return false;
+          }
+        }
+        return true;
+      });
+
+      characterEntities = [...characterEntities, ...filteredEntities];
+    } catch (error: any) {
+      if (error.message.includes("503")) {
+        console.log(
+          "Inference endpoint busy. Retrying with wait_for_model=true..."
+        );
+        const entities = await extractEntities(characterData.backstory, true);
+        const entitiesWithSource = entities.map((entity) => ({
+          ...entity,
+          source: characterData.backstory,
+        }));
+        characterEntities.push(...entitiesWithSource);
+      } else {
+        console.error(`Failed to extract entities: ${error}`);
+      }
+    }
+  }
+
+  const allEntities = [...narrativeEntities, ...characterEntities];
+
+  console.log({ allEntities });
 
   console.log("Generating compendium entries...");
-  if (entities) {
-    for (const entity of entities) {
+  if (allEntities) {
+    for (const entity of allEntities) {
+      const context = entity.source || narrative.narrative_thread;
+
       try {
         let description;
         try {
-          description = await generateDescription(
-            entity.word,
-            narrative.narrative_thread
-          );
+          description = await generateDescription(entity.word, context);
         } catch (error: any) {
           if (error.response && error.response.status === 503) {
             console.log(
               "Inference endpoint busy. Retrying with wait_for_model=true..."
             );
-            description = await generateDescription(
-              entity.word,
-              narrative.narrative_thread,
-              true
-            );
+            description = await generateDescription(entity.word, context, true);
           } else {
             throw error;
           }
         }
-        
+
         const entry = {
           name: entity.word,
           description: description[0].generated_text,
         };
-        
+
         switch (entity.entity_group) {
           case "PER":
             await saveToDB(client, entry, "people");

@@ -11,4 +11,5 @@ export interface Entity {
   word: string;
   start: number;
   end: number;
+  source?: object;
 }

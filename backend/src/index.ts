@@ -22,7 +22,7 @@ async function startServer() {
     console.log("Connected successfully to MongoDB");
 
     await mainGeneratorPipeline(client);
-
+    
     // Set up cron job for intermittant generation
     // cron.schedule("*/2 * * * *", async function () {});
   } catch (err) {

@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { addReferences, mergeAdjacentEntities, saveToDB } from "../utils";
+import { addReferences, mergeAdjacentEntities, removeDuplicateSentences, saveToDB } from "../utils";
 import {
   generateCharacterSheet,
   generateDescription,
@@ -118,13 +118,15 @@ export async function mainGeneratorPipeline(client: MongoClient) {
       try {
         let description;
         try {
-          description = await generateDescription(entity.word, context);
+          let description = await generateDescription(entity.word, context);
+          description = removeDuplicateSentences(description);
         } catch (error: any) {
           if (error.response && error.response.status === 503) {
             console.log(
               "Inference endpoint busy. Retrying with wait_for_model=true..."
             );
-            description = await generateDescription(entity.word, context, true);
+            let description = await generateDescription(entity.word, context, true);
+            description = removeDuplicateSentences(description);
           } else {
             throw error;
           }
@@ -132,7 +134,7 @@ export async function mainGeneratorPipeline(client: MongoClient) {
 
         const entry = {
           name: entity.word.trim(),
-          description: description[0].generated_text,
+          description: description![0].generated_text,
         };
 
         switch (entity.entity_group) {

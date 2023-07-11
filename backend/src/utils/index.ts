@@ -21,7 +21,7 @@ export async function saveToDB(
   }
 }
 
-// Helper function to try and solve some of the problematic results returned by the NER model by combining entities which have no separating characters in the source text
+// Helper function to try to solve some of the problematic results returned by the NER model by combining entities which have no separating characters in the source text
 export function mergeAdjacentEntities(entities: Entity[]): Entity[] {
   const mergedEntities: Entity[] = [];
   for (let i = 0; i < entities.length; i++) {
@@ -44,7 +44,17 @@ export function mergeAdjacentEntities(entities: Entity[]): Entity[] {
   return mergedEntities;
 }
 
-// Add references for related objects in database
+// Try to remove duplicate sentences from generated descriptions
+export function removeDuplicateSentences(text: string): string {
+  const sentences = text.split(". ");
+
+  const uniqueSentences = new Set(sentences);
+
+  const newText = Array.from(uniqueSentences).join(". ");
+
+  return newText;
+}
+
 // Add references for related objects in database
 export async function addReferences(client: MongoClient, ids: IdStorage): Promise<string> {
   const db = client.db();

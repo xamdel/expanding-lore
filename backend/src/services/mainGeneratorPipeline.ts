@@ -119,7 +119,7 @@ export async function mainGeneratorPipeline(client: MongoClient) {
         }
 
         const entry = {
-          name: entity.word,
+          name: entity.word.trim(),
           description: description[0].generated_text,
         };
 

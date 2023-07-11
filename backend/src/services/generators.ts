@@ -33,45 +33,45 @@ export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
 }
 
 // Generate descriptions for named entities extracted from narrative text
-export async function generateDescription(
-  entity: string,
-  text: string,
-  wait_for_model = false
-) {
-  try {
-    // Construct request body
-    const requestBody = {
-      inputs: `${text} Based on the previous paragraph, create a brief description for ${entity}. Do not include anything besides the description of ${entity}. ${entity} is`,
-      parameters: {
-        temperature: 0.5,
-        max_new_tokens: 150,
-        return_full_text: false,
-      },
-      options: {
-        wait_for_model: wait_for_model,
-      },
-    };
+// export async function generateDescription(
+//   entity: string,
+//   text: string,
+//   wait_for_model = false
+// ) {
+//   try {
+//     // Construct request body
+//     const requestBody = {
+//       inputs: `${text} Based on the previous paragraph, create a brief description for ${entity}. Do not include anything besides the description of ${entity}. ${entity} is`,
+//       parameters: {
+//         temperature: 0.5,
+//         max_new_tokens: 150,
+//         return_full_text: false,
+//       },
+//       options: {
+//         wait_for_model: wait_for_model,
+//       },
+//     };
 
-    const response = await fetch(
-      "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
-        },
-        method: "POST",
-        body: JSON.stringify(requestBody),
-      }
-    );
+//     const response = await fetch(
+//       "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
+//         },
+//         method: "POST",
+//         body: JSON.stringify(requestBody),
+//       }
+//     );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const result = await response.json();
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+//     const result = await response.json();
 
-    return result;
-  } catch (error) {
-    console.error(`Failed to generate description: ${error}`);
-    throw error;
-  }
-}
+//     return result;
+//   } catch (error) {
+//     console.error(`Failed to generate description: ${error}`);
+//     throw error;
+//   }
+// }

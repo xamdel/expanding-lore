@@ -10,7 +10,7 @@ const Narratives = ({ narratives }: { narratives: Narratives[]}) => {
             <h1>Narratives</h1>
             {narratives.map((narrative) => (
                 <div key={narrative._id}>
-                    <h2>{narrative["story name"]}</h2>
+                    <h2>{narrative.story_name}</h2>
                     <p>{narrative.narrative_thread}</p>
                 </div>
             ))}

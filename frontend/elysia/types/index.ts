@@ -13,7 +13,7 @@ export interface Character {
 
 export interface Narratives {
   _id: string;
-  "story name": string;
+  story_name: string;
   narrative_thread: string;
 }
 

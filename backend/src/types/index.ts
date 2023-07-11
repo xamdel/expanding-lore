@@ -8,12 +8,9 @@ export interface CharacterBrief {
 }
 
 export interface Entity {
-  entity_group: string;
-  score: number;
-  word: string;
-  start: number;
-  end: number;
-  source?: object;
+  name: string;
+  type: string;
+  description: string;
 }
 
 export interface IdStorage {

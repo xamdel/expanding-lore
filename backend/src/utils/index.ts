@@ -21,39 +21,48 @@ export async function saveToDB(
   }
 }
 
+// Filter specific names from the entities array
+const excludeList = ['Elysia', 'Verdant Vale', 'Crosswind Hold', 'Prancing Griffin'];
+
+export function filterEntities(entities: Entity[], narrativeName: string): Entity[] {
+  return entities.filter(entity => {
+    return entity.name !== narrativeName && !excludeList.includes(entity.name);
+  });
+}
+
 // Helper function to try to solve some of the problematic results returned by the NER model by combining entities which have no separating characters in the source text
-export function mergeAdjacentEntities(entities: Entity[]): Entity[] {
-  const mergedEntities: Entity[] = [];
-  for (let i = 0; i < entities.length; i++) {
-      if (i > 0 && entities[i].start === entities[i - 1].end) {
-          const mergedEntity = {
-              ...entities[i - 1],
-              word: entities[i - 1].word + entities[i].word,
-              end: entities[i].end,
-          };
-          if (mergedEntity.entity_group === 'MISC') {
-              mergedEntity.entity_group = entities[i].entity_group;
-          } else if (entities[i].entity_group !== 'MISC') {
-              mergedEntity.entity_group = entities[i].entity_group;
-          }
-          mergedEntities[mergedEntities.length - 1] = mergedEntity;
-      } else {
-          mergedEntities.push(entities[i]);
-      }
-  }
-  return mergedEntities;
-}
+// export function mergeAdjacentEntities(entities: Entity[]): Entity[] {
+//   const mergedEntities: Entity[] = [];
+//   for (let i = 0; i < entities.length; i++) {
+//       if (i > 0 && entities[i].start === entities[i - 1].end) {
+//           const mergedEntity = {
+//               ...entities[i - 1],
+//               word: entities[i - 1].word + entities[i].word,
+//               end: entities[i].end,
+//           };
+//           if (mergedEntity.entity_group === 'MISC') {
+//               mergedEntity.entity_group = entities[i].entity_group;
+//           } else if (entities[i].entity_group !== 'MISC') {
+//               mergedEntity.entity_group = entities[i].entity_group;
+//           }
+//           mergedEntities[mergedEntities.length - 1] = mergedEntity;
+//       } else {
+//           mergedEntities.push(entities[i]);
+//       }
+//   }
+//   return mergedEntities;
+// }
 
-// Try to remove duplicate sentences from generated descriptions
-export function removeDuplicateSentences(text: string): string {
-  const sentences = text.split(". ");
+// // Try to remove duplicate sentences from generated descriptions
+// export function removeDuplicateSentences(text: string): string {
+//   const sentences = text.split(". ");
 
-  const uniqueSentences = new Set(sentences);
+//   const uniqueSentences = new Set(sentences);
 
-  const newText = Array.from(uniqueSentences).join(". ");
+//   const newText = Array.from(uniqueSentences).join(". ");
 
-  return newText;
-}
+//   return newText;
+// }
 
 // Add references for related objects in database
 export async function addReferences(client: MongoClient, ids: IdStorage): Promise<string> {
@@ -66,7 +75,6 @@ export async function addReferences(client: MongoClient, ids: IdStorage): Promis
         { _id: narrativeId },
         { 
           $push: { 
-            characters: { $each: ids.characters },
             locations: { $each: ids.locations },
             factions: { $each: ids.factions },
             other: { $each: ids.other }

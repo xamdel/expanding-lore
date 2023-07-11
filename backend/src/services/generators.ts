@@ -6,7 +6,7 @@ import { generateCompletion } from "./callOpenai";
 export async function generateNarrative() {
   const model = "gpt-4";
   const response = await generateCompletion(narrativePrompt, model);
-  const cleanedResponse = response.replace(/\n/g, ' ');
+  const cleanedResponse = response.replace(/\n/g, " ");
   const narrative = JSON.parse(cleanedResponse);
 
   return narrative;
@@ -23,11 +23,21 @@ export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
   );
   const characterSheet = JSON.parse(response);
 
+  characterSheet.brief_description = CharacterBrief.brief_description;
+  characterSheet.relationship_to_narrative =
+    CharacterBrief.relationship_to_narrative;
+  characterSheet.reason_for_being_in_Crosswind_Hold =
+    CharacterBrief.reason_for_being_in_Crosswind_Hold;
+
   return characterSheet;
 }
 
 // Generate descriptions for named entities extracted from narrative text
-export async function generateDescription(entity: string, text: string, wait_for_model = false) {
+export async function generateDescription(
+  entity: string,
+  text: string,
+  wait_for_model = false
+) {
   try {
     // Construct request body
     const requestBody = {
@@ -38,16 +48,16 @@ export async function generateDescription(entity: string, text: string, wait_for
         return_full_text: false,
       },
       options: {
-        wait_for_model: wait_for_model
-      }
+        wait_for_model: wait_for_model,
+      },
     };
-    
+
     const response = await fetch(
       "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
       {
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}` 
+          Authorization: `Bearer ${process.env.HUGGINGFACE_TOKEN}`,
         },
         method: "POST",
         body: JSON.stringify(requestBody),

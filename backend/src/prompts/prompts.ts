@@ -7,7 +7,7 @@ Write the beginning of a narrative thread taking place in the vast fantasy world
   "characters": [
     {
       "name": <first and last>,
-      "brief description": ,
+      "brief_description": ,
       "relationship_to_narrative": ,
       "reason_for_being_in_Crosswind_Hold": ,
     },

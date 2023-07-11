@@ -21,6 +21,9 @@ async function startServer() {
     await client.connect();
     console.log("Connected successfully to MongoDB");
 
+    // Generate story on server start
+    await mainGeneratorPipeline(client);
+
     // Set up cron job for intermittent generation
     let counter = 0;
     cron.schedule("* * * * *", async function () {

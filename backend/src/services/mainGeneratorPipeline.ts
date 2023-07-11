@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { saveToDB } from "../utils";
+import { mergeAdjacentEntities, saveToDB } from "../utils";
 import {
   generateCharacterSheet,
   generateDescription,
@@ -41,13 +41,14 @@ export async function mainGeneratorPipeline(client: MongoClient) {
       console.error(`Failed to extract entities: ${error}`);
     }
   }
+  narrativeEntities = mergeAdjacentEntities(narrativeEntities);
 
-  // Extract entities from character backstories
   // Extract entities from character backstories
   let characterEntities: Entity[] = [];
   for (const characterData of characters) {
     try {
-      const entities = await extractEntities(characterData.backstory);
+      let entities = await extractEntities(characterData.backstory);
+      entities = mergeAdjacentEntities(entities);
       const entitiesWithSource = entities.map((entity) => ({
         ...entity,
         source: characterData.backstory,
@@ -73,7 +74,8 @@ export async function mainGeneratorPipeline(client: MongoClient) {
         console.log(
           "Inference endpoint busy. Retrying with wait_for_model=true..."
         );
-        const entities = await extractEntities(characterData.backstory, true);
+        let entities = await extractEntities(characterData.backstory, true);
+        entities = mergeAdjacentEntities(entities);
         const entitiesWithSource = entities.map((entity) => ({
           ...entity,
           source: characterData.backstory,
@@ -90,8 +92,15 @@ export async function mainGeneratorPipeline(client: MongoClient) {
   console.log({ allEntities });
 
   console.log("Generating compendium entries...");
+
+  const uniqueEntities = new Set();
+
   if (allEntities) {
     for (const entity of allEntities) {
+      if (uniqueEntities.has(entity.word)) {
+        continue;
+      }
+      uniqueEntities.add(entity.word);
       const context = entity.source || narrative.narrative_thread;
 
       try {

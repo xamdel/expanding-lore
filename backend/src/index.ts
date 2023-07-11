@@ -21,10 +21,17 @@ async function startServer() {
     await client.connect();
     console.log("Connected successfully to MongoDB");
 
-    await mainGeneratorPipeline(client);
-    
-    // Set up cron job for intermittant generation
-    // cron.schedule("*/2 * * * *", async function () {});
+    // Set up cron job for intermittent generation
+    let counter = 0;
+    cron.schedule("* * * * *", async function () {
+      const randomNumber = Math.floor(Math.random() * 120) + 1;
+      counter++;
+      if (randomNumber === 1 || counter >= 240) {
+        console.log('Running mainGeneratorPipeline...');
+        await mainGeneratorPipeline(client);
+        counter = 0;
+      }
+    });
   } catch (err) {
     console.error("Failed to connect to MongoDB", err);
     process.exit(1);

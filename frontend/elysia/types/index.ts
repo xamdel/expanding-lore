@@ -1,3 +1,9 @@
+import { ReactNode } from "react";
+
+export interface LayoutProps {
+  children: ReactNode;
+}
+
 export interface Character {
   _id: string;
   name: string;

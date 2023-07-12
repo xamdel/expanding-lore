@@ -3,28 +3,30 @@ import { MongoClient } from 'mongodb';
 import { Character } from '../../types';
 import styles from '../../styles/Compendium.module.css'
 import Link from 'next/link';
+import CompendiumLayout from '../../components/layouts/CompendiumLayout';
 
-const Characters = ({ characters }: { characters: Character[]}) => {
-    
+const Characters = ({ characters }: { characters: Character[] }) => {
+
     return (
-        <div className={styles.container}>
-            <Link href={'../Compendium'}>Home</Link>
-            <h1>Characters</h1>
-            {characters.map((character) => (
-                <div key={character._id}>
-                    <h2>{character.name}</h2>
-                    <p>{character.physical_description}</p>
-                    <p>{character.backstory}</p>
-                    <p>{character.description}</p>
-                </div>
-            ))}
-        </div>
+        <CompendiumLayout>
+            <div className={styles.container}>
+                <h1>Characters</h1>
+                {characters.map((character) => (
+                    <div key={character._id}>
+                        <h2>{character.name}</h2>
+                        <p>{character.physical_description}</p>
+                        <p>{character.backstory}</p>
+                        <p>{character.description}</p>
+                    </div>
+                ))}
+            </div>
+        </CompendiumLayout>
     );
 };
 
 const MONGO_URI = process.env.NEXT_PUBLIC_MONGO_URI;
 if (!MONGO_URI) {
-  throw new Error("Database environment variable not set");
+    throw new Error("Database environment variable not set");
 }
 
 export const getStaticProps: GetStaticProps = async () => {

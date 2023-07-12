@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const db = client.db();
     const othersCollection = db.collection('other');
 
-    const others = await othersCollection.find().toArray();
+    const others = await othersCollection.find().sort({ name : 1 }).toArray();
 
     await client.close();
 

@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const db = client.db();
     const charactersCollection = db.collection('characters');
 
-    const characters = await charactersCollection.find().toArray();
+    const characters = await charactersCollection.find().sort({ name: 1 }).toArray();
 
     await client.close();
 

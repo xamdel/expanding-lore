@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const db = client.db();
     const factionsCollection = db.collection('factions');
 
-    const factions = await factionsCollection.find().toArray();
+    const factions = await factionsCollection.find().sort({ name : 1 }).toArray();
 
     await client.close();
 

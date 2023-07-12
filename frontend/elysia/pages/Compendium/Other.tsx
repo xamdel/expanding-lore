@@ -2,11 +2,13 @@ import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Other } from '../../types';
 import styles from '../../styles/Compendium.module.css'
+import Link from 'next/link';
 
 const Others = ({ others }: { others: Other[]}) => {
     
     return (
         <div className={styles.container}>
+            <Link href={'../Compendium'}>Home</Link>
             <h1>Other</h1>
             {others.map((other) => (
                 <div key={other._id}>

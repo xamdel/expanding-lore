@@ -24,6 +24,7 @@ export async function generateCharacterSheet(CharacterBrief: CharacterBrief) {
   const characterSheet = JSON.parse(response);
 
   characterSheet.brief_description = CharacterBrief.brief_description;
+  CharacterBrief.backstory = characterSheet.backstory; 
   characterSheet.relationship_to_narrative =
     CharacterBrief.relationship_to_narrative;
   characterSheet.reason_for_being_in_Crosswind_Hold =

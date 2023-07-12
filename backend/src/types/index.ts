@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 export interface CharacterBrief {
   name: string;
   brief_description: string;
+  backstory: string;
   relationship_to_narrative: string;
   reason_for_being_in_Crosswind_Hold: string;
 }

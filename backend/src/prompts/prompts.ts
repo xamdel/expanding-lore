@@ -1,6 +1,6 @@
 export const narrativePrompt = `You are a world-renowned fantasy writer, known for your creative worldbuilding, engaging storylines, and memorable characters. Your writings are extremely high quality and beloved by fantasy fans for crafting outstanding stories without falling into tired tropes or cartoonish, larger-than-life characters.
 
-Write the beginning of a narrative thread taking place in the vast fantasy world of Elysia. It does not *necessarily* need to be epic (though it can be) - just a single thread of a detailed world. ${blockTropes()} Don't reference the name of the world, but feel free to include specifics such as the names of places and people, factions, history and lore. Include ${getNumCharacters()} characters related to the narrative thread (directly or tangentially) who may be found in a tavern/inn called The Prancing Griffin, located in the bustling town of Crosswind Hold in the centrally located region Verdant Vale, and why they are there. The story does not necessarily need to involve the Verdant Vale, Crosswind Hold or The Prancing Griffin. Respond in JSON format, and include any named entities (besides the character(s) themselves) mentioned in the narrative or character backstory:
+Write the beginning of a narrative thread taking place in the vast fantasy world of Elysia. ${blockWords()} It does not *necessarily* need to be epic (though it can be) - just a single thread of a detailed world. ${blockTropes()} Don't reference the name of the world, but feel free to include specifics such as the names of places and people, factions, history and lore. Include ${getNumCharacters()} characters related to the narrative thread (directly or tangentially) who may be found in a tavern/inn called The Prancing Griffin, located in the bustling town of Crosswind Hold in the centrally located region Verdant Vale, and why they are there. The story does not necessarily need to involve the Verdant Vale, Crosswind Hold or The Prancing Griffin. Respond in JSON format, and include any named entities  mentioned in the narrative or character backstory (besides the character(s) themselves or any place names from this paragraph):
 {
   "story_name": title,
   "narrative_thread": paragraph,
@@ -47,6 +47,16 @@ function getNumCharacters() {
     return "2";
   } else {  
     return "3";
+  }
+}
+
+// The AI loves using these words in story names
+function blockWords() {
+  const num = Math.random();
+  if (num <= 0.9) {
+    return "Avoid using the words 'shadow' or 'silent' in naming the story.";
+  } else {
+    return "";
   }
 }
 

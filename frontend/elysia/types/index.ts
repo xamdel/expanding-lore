@@ -9,6 +9,7 @@ export interface Character {
   reason_for_being_here: string;
   intended_duration_of_stay: string;
   friendliness: number;
+  description?: string;
 }
 
 export interface Narratives {

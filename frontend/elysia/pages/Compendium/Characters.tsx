@@ -13,6 +13,7 @@ const Characters = ({ characters }: { characters: Character[]}) => {
                     <h2>{character.name}</h2>
                     <p>{character.physical_description}</p>
                     <p>{character.backstory}</p>
+                    <p>{character.description}</p>
                 </div>
             ))}
         </div>

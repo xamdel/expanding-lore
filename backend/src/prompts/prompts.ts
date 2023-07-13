@@ -54,7 +54,7 @@ function getNumCharacters() {
 function blockWords() {
   const num = Math.random();
   if (num <= 0.9) {
-    return "Avoid using the words 'shadow' or 'silent' in naming the story.";
+    return "Avoid using the words 'shadow', 'silent' or 'whisper' in naming the story.";
   } else {
     return "";
   }

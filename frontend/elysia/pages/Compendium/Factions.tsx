@@ -2,7 +2,6 @@ import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Factions } from '../../types';
 import styles from '../../styles/Compendium.module.css'
-import Link from 'next/link';
 import CompendiumLayout from '../../components/layouts/CompendiumLayout';
 
 const Factions = ({ factions }: { factions: Factions[] }) => {
@@ -10,7 +9,6 @@ const Factions = ({ factions }: { factions: Factions[] }) => {
     return (
         <CompendiumLayout>
             <div className={styles.container}>
-                <Link href={'../Compendium'}>Home</Link>
                 <h1>Factions</h1>
                 {factions.map((faction) => (
                     <div key={faction._id}>

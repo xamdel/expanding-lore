@@ -1,6 +1,6 @@
 const Header = () => (
     <header>
-        <h1>Expanding Lore</h1>
+        <h3>Expanding Lore</h3>
     </header>
 );
 export default Header;

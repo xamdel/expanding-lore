@@ -2,7 +2,6 @@ import { GetStaticProps } from 'next';
 import { MongoClient } from 'mongodb';
 import { Other } from '../../types';
 import styles from '../../styles/Compendium.module.css'
-import Link from 'next/link';
 import CompendiumLayout from '../../components/layouts/CompendiumLayout';
 
 const Others = ({ others }: { others: Other[] }) => {
@@ -10,7 +9,6 @@ const Others = ({ others }: { others: Other[] }) => {
     return (
         <CompendiumLayout>
             <div className={styles.container}>
-                <Link href={'../Compendium'}>Home</Link>
                 <h1>Other</h1>
                 {others.map((other) => (
                     <div key={other._id}>

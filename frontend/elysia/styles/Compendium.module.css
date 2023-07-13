@@ -10,11 +10,25 @@
   }
 }
 
+.compendiumHeader {
+  text-align: center;
+  max-width: 900px;
+  margin: auto;
+  color: white;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    max-width: 800px;
-    margin: auto;
+    text-align: left;
+    background-image: url('../public/images/website/kiwihug-3gifzboyZk0-unsplash.jpg');
+    margin-top: 1rem;
+    padding: 1rem;
+    color: black;
+}
+
+.container > * {
+  margin-bottom: 1rem;
 }
 
 .cardContainer {
@@ -26,14 +40,38 @@
 }
 
 .card {
+  border: 1px solid black;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  text-align: center;
-  width: 300px;
+  text-align: left;
+  color: white;
+  font-size: xx-large;
+  width: 600px;
+  height: 200px;
   max-width: 800px;
   cursor: pointer;
   transition: box-shadow 0.3s ease-in-out;
+}
+
+.storylinesCard {
+  background: url('../public/images/website/storylines1.png') no-repeat center center/cover;
+}
+
+.locationsCard {
+  background: url('../public/images/website/locations.png') no-repeat center center/cover;
+}
+
+.factionsCard {
+  background: url('../public/images/website/factions3.png') no-repeat center center/cover;
+}
+
+.charactersCard {
+  background: url('../public/images/website/characters1.png') no-repeat center center/cover;
+}
+
+.otherCard {
+  background: url('../public/images/website/other.png') no-repeat center center/cover;
 }
 
 .card:hover {

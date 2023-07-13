@@ -12,23 +12,36 @@
 
 .compendiumHeader {
   text-align: center;
-  max-width: 600px;
   margin: auto;
   color: white;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    background-image: url('../public/images/website/kiwihug-3gifzboyZk0-unsplash.jpg');
-    margin-top: 1rem;
-    padding: 1rem;
-    color: black;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background-image: url('../public/images/website/kiwihug-3gifzboyZk0-unsplash.jpg');
+  margin-top: 1rem;
+  padding: 1rem;
+  color: black;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .container {
+    width: 80%;
+    max-width: 900px;
+    margin: auto;
+  }
 }
 
 .container > * {
   margin-bottom: 1rem;
+}
+
+.container > div {
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
 }
 
 .cardContainer {
@@ -36,6 +49,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 15px;
+  width: 600px;
+  margin: auto;
 }
 
 .card {
@@ -72,8 +87,4 @@
 
 .otherCard {
   background: url('../public/images/website/other.png') no-repeat center center/cover;
-}
-
-.card:hover {
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
 }
